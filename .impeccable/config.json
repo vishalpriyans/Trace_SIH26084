@@ -1,0 +1,19 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      "web/.next/**",
+      "web/node_modules/**"
+    ],
+    "ignoreValues": [],
+    "designSystem": {
+      "enabled": true
+    }
+  },
+  "hook": {
+    "enabled": false,
+    "quiet": false,
+    "auditLog": ".impeccable/hook.ndjson"
+  },
+  "buildPath": "code"
+}

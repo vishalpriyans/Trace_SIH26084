@@ -1,0 +1,322 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   TRACE design system.
+
+   The world is the dark card dashboard the user pinned as the reference, taken
+   straight rather than reinterpreted. One accent survives from the earlier
+   direction: desaturated petrol, which carries every primary action and the
+   ordinal ramp for tier and coverage.
+
+   Two grounds, one system. Dark is the default everywhere, including the field
+   surface, because the product should look like one product. The light ground
+   is the sun switch: a phone read at a work front in direct sunlight is
+   legible at maximum luminance and a dark screen there is not.
+
+   Every ratio in the comments is computed, not chosen. The harness that
+   produced them checks functional text at 4.5, decorative at 3.0, tinted pill
+   text against its own wash at 4.5, and the structural steps between planes at
+   perceptibility floors rather than text floors. Recompute the whole set
+   whenever a plane tone moves, because the ramp is derived from it.
+--------------------------------------------------------------------------- */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ground: #08090b;      /* the page behind the cards */
+  --surface: #17191e;     /* the card plane. 1.13 above ground */
+  --raised: #1f232a;      /* inputs, hover, nested wells. 1.14 above surface */
+  --sunken: #0e1013;      /* column beds and table headers. 1.24 below surface */
+  --line: #262a32;        /* 1.21 on surface */
+  --line-firm: #3a404b;   /* 1.71 on surface */
+
+  /* Ratios below are the WORST plane this ink can land on, not the card. The
+     card is the flattering measurement, and quoting it is how a token
+     documented at 3.76 ends up carrying body text at 3.33 on a status wash. */
+  --ink: #eceef1;         /* 13.30 worst */
+  --ink-mid: #9ba3ae;     /* 6.01 worst */
+  --ink-meta: #8a939e;    /* 4.92 worst. Labels, notes, legends, captions:
+                             anything a reader has to actually read. */
+  --ink-dim: #6d7681;     /* 3.33 worst. NON-TEXT ONLY: rules, separators,
+                             inactive marks. Never a word a user must read. */
+
+  --accent: #3ba7bf;      /* petrol. 6.16 on surface */
+  --accent-ink: #04171c;  /* 6.52 on accent, for filled buttons */
+  --accent-wash: #10262d; /* accent reads 5.58 on it */
+
+  --ok: #45c08a;          /* 7.56 */
+  --warn: #e0a63f;        /* 8.01 */
+  --crit: #ef7369;        /* 6.05 */
+  --idle: #8a94a0;        /* 5.63 */
+  --ok-wash: #0e2a20;
+  --warn-wash: #2c2312;
+  --crit-wash: #321a18;
+  --idle-wash: #191c22;
+
+  /* One hue in monotone steps, for tier, coverage and the gauge, where
+     swapping two steps would change the meaning. 2.24 / 3.67 / 6.16 / 9.75 on
+     the card plane.
+
+     These are FILL values, not text backgrounds. The ramp climbs through the
+     text-contrast band rather than sitting above it, so no single ink reads on
+     all four steps: dark ink fails step 1 at 2.58 and light ink fails step 3
+     at 2.42. Anything that needs a tinted plate with a label on it uses the
+     avatar tints below instead. */
+  --ramp-1: #1f5a68;
+  --ramp-2: #2c7d90;
+  --ramp-3: #3ba7bf;
+  --ramp-4: #79cfe0;
+
+  /* Identity tints. A separate set from the ramp on purpose: the ramp encodes
+     order, and order is meaningless for a person. All four clear 4.5 against
+     --avatar-ink (8.37 / 9.39 / 7.48 / 9.43) and stay distinguishable from the
+     card plane. */
+  --avatar-1: #1a4a56;
+  --avatar-2: #25404f;
+  --avatar-3: #2a5342;
+  --avatar-4: #4a3550;
+  --avatar-ink: #eceef1;
+
+  /* Elevation is declared once per element class: cards take the shadow,
+     nested panels take the hairline, and nothing takes both. A 1px border
+     under a wide soft shadow is the ghost card. */
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.44), 0 8px 24px -10px rgb(0 0 0 / 0.66);
+  --shadow-pop: 0 2px 4px rgb(0 0 0 / 0.5), 0 16px 40px -12px rgb(0 0 0 / 0.72);
+}
+
+/* The sun switch. Same system, inverted ground, every ratio re-derived rather
+   than assumed to invert. */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --ground: #eef0f3;
+  --surface: #ffffff;     /* cards are paper white here, the ground is not */
+  --raised: #f1f4f7;
+  --sunken: #e9ecf0;
+  --line: #dfe3e9;        /* 1.29 */
+  --line-firm: #bcc3cc;   /* 1.78 */
+
+  --ink: #12151a;         /* 15.28 worst, off black, never pure black */
+  --ink-mid: #4b545f;     /* 6.42 worst */
+  --ink-meta: #5c666f;    /* 4.89 worst */
+  --ink-dim: #77808b;     /* 3.34 worst. Non-text only. */
+
+  --accent: #0b6273;      /* 6.98 */
+  --accent-ink: #ffffff;  /* 6.98 on accent */
+  --accent-wash: #e0eff2; /* accent reads 5.92 on it */
+
+  --ok: #12633f;          /* 7.29 */
+  --warn: #7d4806;        /* 7.50 */
+  --crit: #96201c;        /* 8.33 */
+  --idle: #56606b;        /* 6.40 */
+  --ok-wash: #e2f2e9;
+  --warn-wash: #fbf0dc;
+  --crit-wash: #fbe6e4;
+  --idle-wash: #eaedf1;
+
+  /* Reversed direction, same monotonic climb: 2.11 / 3.48 / 6.17 / 11.50.
+     Fill values only, for the same reason as the dark ramp. */
+  --ramp-1: #8cbac5;
+  --ramp-2: #4e93a3;
+  --ramp-3: #1c6a7c;
+  --ramp-4: #0a3f4b;
+
+  /* 10.69 / 10.27 / 11.28 / 10.31 against --avatar-ink. */
+  --avatar-1: #a9ccd4;
+  --avatar-2: #b3c4d6;
+  --avatar-3: #aed4bd;
+  --avatar-4: #cfbcd8;
+  --avatar-ink: #12151a;
+
+  --shadow-card: 0 1px 2px rgb(16 22 30 / 0.06), 0 8px 20px -10px rgb(16 22 30 / 0.16);
+  --shadow-pop: 0 2px 6px rgb(16 22 30 / 0.08), 0 18px 40px -14px rgb(16 22 30 / 0.22);
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-line-firm: var(--line-firm);
+
+  --color-ink: var(--ink);
+  --color-ink-mid: var(--ink-mid);
+  --color-ink-meta: var(--ink-meta);
+  --color-ink-dim: var(--ink-dim);
+
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-wash: var(--accent-wash);
+
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-crit: var(--crit);
+  --color-idle: var(--idle);
+  --color-ok-wash: var(--ok-wash);
+  --color-warn-wash: var(--warn-wash);
+  --color-crit-wash: var(--crit-wash);
+  --color-idle-wash: var(--idle-wash);
+
+  --color-ramp-1: var(--ramp-1);
+  --color-ramp-2: var(--ramp-2);
+  --color-ramp-3: var(--ramp-3);
+  --color-ramp-4: var(--ramp-4);
+
+  --color-avatar-1: var(--avatar-1);
+  --color-avatar-2: var(--avatar-2);
+  --color-avatar-3: var(--avatar-3);
+  --color-avatar-4: var(--avatar-4);
+  --color-avatar-ink: var(--avatar-ink);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Seven sizes and only seven, each step at least 1.15 from the last. The
+     field surface lives from --text-title upward, because 18px is its
+     functional floor with gloves in direct sun. */
+  --text-label: 11px;   /* uppercase tracked labels and screen codes */
+  --text-data: 12.5px;  /* metadata and dense cells, the console workhorse */
+  --text-body: 14.5px;  /* body prose and the inherited base */
+  --text-title: 18px;   /* card titles, and the field surface's floor */
+  --text-lead: 21px;    /* field primary actions and rows at arm's length */
+  --text-figure: 32px;  /* card figures */
+  --text-hero: 46px;    /* the single largest figure, queue depth */
+
+  /* The field surface's functional floor, enforced rather than described.
+     Nothing carrying meaning on that surface may be set below this. The
+     console's --text-data and --text-label do not exist inside app/field. */
+  --text-field: 18px;
+  --text-field-meta: 18px;
+
+  --radius-chip: 6px;     /* pill tags and small badges */
+  --radius-control: 8px;  /* buttons, inputs, selects */
+  --radius-card: 14px;    /* every card. The floor is 12 to 16 */
+  --radius-pill: 999px;   /* avatars and segmented switches only */
+
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+
+  /* One motion grammar. Exponential ease out, 140 to 220ms, from an already
+     visible default. Nothing on this product animates in on load. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--ground);
+  }
+
+  /* The field surface's floor, enforced by redefining the scale inside its own
+     scope rather than by remembering to size each element. Every shared
+     component, chip and badge inherits it automatically, so a console
+     component reused here cannot silently arrive at 12.5px.
+
+     The scale compresses on purpose: this surface is read at arm's length in
+     direct sun by someone wearing gloves, and it needs fewer, larger steps
+     rather than the console's seven. */
+  [data-surface="field"] {
+    --text-label: 18px;
+    --text-data: 18px;
+    --text-body: 18px;
+    --text-title: 21px;
+    --text-lead: 25px;
+    --text-figure: 34px;
+    font-size: var(--text-field);
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--text-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The parts nobody draws still carry the design. These ship as OS defaults
+     belonging to no design system, and a planner copying an activity id sees
+     the selection colour constantly. */
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :where(input, textarea) {
+    caret-color: var(--accent);
+  }
+
+  :where(button, [role="button"], a, input, select, textarea, summary):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-control);
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.011em;
+  }
+
+  * {
+    scrollbar-color: var(--line-firm) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+@layer utilities {
+  /* Every column of digits carries this. Confidence scores are compared down a
+     column and activity ids character by character. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The card. Tonal step plus shadow, never a border as well. */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Anything nested inside a card. Hairline only, no shadow, because a card
+     inside a card is the thing this rule exists to prevent. */
+  .panel {
+    background: var(--raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-control);
+  }
+
+  .bed {
+    background: var(--sunken);
+    border-radius: var(--radius-card);
+  }
+
+  .hairline-b { border-bottom: 1px solid var(--line); }
+  .hairline-t { border-top: 1px solid var(--line); }
+  .hairline-r { border-right: 1px solid var(--line); }
+  .hairline-l { border-left: 1px solid var(--line); }
+  .hairline { border: 1px solid var(--line); }
+}
+
+/* Reduced motion, scoped rather than blanket.
+   Transitions here are all hover, focus and disclosure eases whose end state
+   lands instantly anyway, so collapsing them costs nothing. What a blanket
+   kill would cost is the ability to write a reduced-motion ALTERNATIVE: an
+   unlayered !important rule cannot be overridden from inside the design
+   system, so it pre-breaks the first progress indicator anyone adds. This
+   sits in a layer, carries no !important, and leaves animation alone so a
+   future authored alternative can win.
+
+   The SOS hold is the one motion that genuinely conveys state, and it is
+   driven in JS rather than CSS, so it is handled at its own call site. */
+@layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms;
+      scroll-behavior: auto;
+    }
+  }
+}

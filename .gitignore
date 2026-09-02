@@ -1,0 +1,17 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+.tunnel_url
+
+# web console
+node_modules/
+web/.next/
+web/out/
+.env.local
+.env*.local
+next-env.d.ts
+.impeccable/config.local.json
+.impeccable/hook.ndjson

@@ -1,0 +1,11 @@
+{
+  "comp": "comp-2-register.html",
+  "direction": "2df8c68f",
+  "kind": "assigned",
+  "world": "Permit Board, dark rendition",
+  "viewport": "1440x900 desktop landscape",
+  "medium": "hand-authored HTML, captured in browser. No image generation on this machine, so the comp is the real composition rather than a render of one.",
+  "prompt": "Review queue as a shift register. Same four regions. The board becomes a single dense column of full width rows, four fixed columns per row: a 104px tag plate carrying status, confidence and tier; the spoken quote with reporter and time; the matched activity with margin and the reason it is held; a fixed action stack. Keyboard hint bar and bulk threshold sit above the rows with the threshold drawn as a graticule. Rows alternate ground, the selected row takes a hi-vis left edge.",
+  "varies": "Density and repetition. Actions land in the same place every row so a planner clearing forty does not re-aim.",
+  "approved": false
+}
