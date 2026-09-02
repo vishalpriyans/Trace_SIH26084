@@ -67,6 +67,22 @@ export const DATA_SOURCE: DataSource = "supabase";
 
 const isDb = DATA_SOURCE === "supabase";
 
+/**
+ * Whether a matching engine computed the scores on screen.
+ *
+ * This is a SEPARATE question from `DATA_SOURCE`, and conflating the two was a
+ * real defect: the provenance banner used to hide itself as soon as the rows
+ * came from Postgres, which quietly removed the disclosure while every
+ * confidence, margin and tier was still a value a person typed.
+ *
+ * Moving rows into a database changes where they are stored. It does not
+ * measure anything. These numbers become measurements when Tiers 0 to 3 write
+ * them, and this flag is what says so.
+ *
+ * Flip to true only when the matcher actually scores the rows on screen.
+ */
+export const MATCHER_BUILT = false;
+
 /** The baseline the console reads. Matches are valid against the baseline they
  *  were made against, so this is explicit rather than "the latest". */
 const BASELINE = 3;

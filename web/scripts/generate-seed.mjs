@@ -48,12 +48,50 @@ function uuid(key) {
 /* ---------------------------------------------------------------------------
    SQL literals.
 --------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Dates move with the calendar.
+
+   The fixtures were authored against 1 September 2026. Several views are
+   relative to `current_date`: v_coverage counts what was reported TODAY, and
+   fn_expected_today filters on the planned window. Left fixed, the demo decays
+   a little every day, and by the second day the coverage board reads six of
+   eight silent and Expected today is empty. That does not look like a seeded
+   database, it looks like a broken product.
+
+   So every ISO date and timestamp is shifted by the gap between the anchor and
+   the day the seed is generated. Re-running the seed re-dates the demo to
+   today. Wall clock time and the +05:30 offset are preserved exactly: 07:40 on
+   site stays 07:40 on site, on a later day.
+
+   Set TRACE_SEED_ANCHOR to a date to pin it, or to "none" to emit the fixture
+   dates unshifted, which is what a reproducible test wants.
+--------------------------------------------------------------------------- */
+const ANCHOR = "2026-09-01";
+const pin = process.env.TRACE_SEED_ANCHOR;
+const today = pin && pin !== "none" ? pin : new Date().toISOString().slice(0, 10);
+const OFFSET_DAYS =
+  pin === "none"
+    ? 0
+    : Math.round((Date.parse(`${today}T00:00:00Z`) - Date.parse(`${ANCHOR}T00:00:00Z`)) / 86400000);
+
+const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})(T.*)?$/;
+
+function shiftIso(value) {
+  const m = ISO_DATE.exec(value);
+  if (!m || OFFSET_DAYS === 0) return value;
+  /* Only the date half moves. Rebuilding from a full Date would drag the
+     timestamp through the runner's timezone and silently rewrite +05:30. */
+  const d = new Date(Date.parse(`${m[1]}-${m[2]}-${m[3]}T00:00:00Z`));
+  d.setUTCDate(d.getUTCDate() + OFFSET_DAYS);
+  return d.toISOString().slice(0, 10) + (m[4] ?? "");
+}
+
 const q = (s) => `'${String(s).replace(/'/g, "''")}'`;
 const lit = (v) => {
   if (v === null || v === undefined) return "null";
   if (typeof v === "number") return Number.isFinite(v) ? String(v) : "null";
   if (typeof v === "boolean") return v ? "true" : "false";
-  return q(v);
+  return q(typeof v === "string" ? shiftIso(v) : v);
 };
 const textArray = (a) =>
   !a || a.length === 0 ? "'{}'" : `array[${a.map(q).join(",")}]::text[]`;
@@ -595,7 +633,13 @@ const header = `-- ============================================================
 -- real queries replace the fixture reads, because that flag is what keeps the
 -- provenance banner on screen.
 --
--- Generated ${new Date().toISOString().slice(0, 10)} from ${QUEUE.length} queue rows,
+-- DATES ARE RELATIVE. The fixtures are authored against ${ANCHOR} and every
+-- date below is shifted by ${OFFSET_DAYS} day(s) so that "today" is ${today}.
+-- v_coverage and fn_expected_today are relative to current_date, so a fixed
+-- seed decays into an empty board within a day. Re-run the generator to
+-- re-date the demo. TRACE_SEED_ANCHOR=none emits the unshifted fixture dates.
+--
+-- Generated ${today} from ${QUEUE.length} queue rows,
 -- ${registry.size} activities, ${SUPERVISORS.length} supervisors.
 -- ============================================================
 
@@ -621,6 +665,11 @@ union all select 'sos_events', count(*) from public.sos_events;
 writeFileSync(OUT, header + out.join("\n") + footer, "utf8");
 
 console.log(`wrote ${OUT}`);
+console.log(
+  OFFSET_DAYS === 0
+    ? `  dates unshifted (anchor ${ANCHOR})`
+    : `  dates shifted ${OFFSET_DAYS > 0 ? "+" : ""}${OFFSET_DAYS} day(s): ${ANCHOR} reads as ${today}`,
+);
 console.log(
   `  activities ${registry.size} · supervisors ${SUPERVISORS.length} · reports ${reports.length} · ` +
   `events ${events.length} · candidates ${candidates.length} · matches ${matches.length} · ` +

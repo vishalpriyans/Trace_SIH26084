@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TopBar, PageHead } from "@/components/chrome/TopBar";
 import { Card } from "@/components/ui/Control";
 import { Tag, MetaTag } from "@/components/ui/Tag";
+import { Provenance } from "@/components/ui/Provenance";
 import { getActivities, getCounts } from "@/lib/data";
 import { DISCIPLINE_LABEL, SCHEDULE_LABEL } from "@/lib/status";
 import { day } from "@/lib/format";
@@ -28,6 +29,17 @@ export default async function ActivitiesPage() {
       />
 
       <div className="px-5 pb-10">
+        {/* The registry is synthetic by instruction, but the actual dates and
+            percentages on these rows were derived from authored matches rather
+            than from a matcher, so the disclosure belongs here too. */}
+        <div className="mb-5">
+          <Provenance>
+            The registry is synthetic, as the problem statement instructs. The actual dates and
+            percent complete on these rows were derived from hand authored matches, not from a
+            matching engine.
+          </Provenance>
+        </div>
+
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[900px] border-collapse text-left">
