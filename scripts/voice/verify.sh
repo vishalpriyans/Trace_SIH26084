@@ -41,7 +41,7 @@ esac
 hdr "2. Startup guard (a half-configured process must not serve)"
 mkdir -p "$SP/partial"
 grep -v '^TOOL_BEARER_TOKEN=' .env > "$SP/partial/.env"
-GUARD="$(cd "$SP/partial" && PYTHONPATH="$ROOT" "$ROOT/.venv/bin/python" -c "import app.main" 2>&1)"
+GUARD="$(cd "$SP/partial" && PYTHONPATH="$ROOT/services/voice-ingest" "$ROOT/.venv/bin/python" -c "import app.main" 2>&1)"
 echo "$GUARD" | grep -q "refusing to start" && ok "refuses to boot without TOOL_BEARER_TOKEN" \
   || bad "booted anyway without TOOL_BEARER_TOKEN"
 echo "$GUARD" | grep -q "TOOL_BEARER_TOKEN" && ok "names the missing key" || bad "does not name the missing key"

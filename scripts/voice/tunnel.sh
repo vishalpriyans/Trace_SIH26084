@@ -13,7 +13,7 @@ PORT=8787
 
 if ! curl -sf --max-time 3 "http://localhost:$PORT/health" >/dev/null; then
   echo "The app is not answering on localhost:$PORT."
-  echo "Start it first:  .venv/bin/uvicorn app.main:app --reload --port $PORT"
+  echo "Start it first:  .venv/bin/uvicorn app.main:app --app-dir services/voice-ingest --reload --port $PORT"
   exit 1
 fi
 

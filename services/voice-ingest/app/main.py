@@ -4,7 +4,7 @@ TRACE / SIH26122 — voice-agent -> Supabase ingest.
 One job: prove that Sarvam's voice agent can capture field data
 and land it in Supabase. No matching engine, no dashboard.
 
-Run:  .venv/bin/uvicorn app.main:app --reload --port 8787
+Run:  .venv/bin/uvicorn app.main:app --app-dir services/voice-ingest --reload --port 8787
 """
 import hashlib
 import hmac

@@ -34,7 +34,7 @@ Then add your Supabase URL and **service role** key (Project Settings → API Ke
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-.venv/bin/uvicorn app.main:app --reload --port 8787
+.venv/bin/uvicorn app.main:app --app-dir services/voice-ingest --reload --port 8787
 ```
 
 Port 8787 matches the tunnel. The app **refuses to start** if any required `.env` value is

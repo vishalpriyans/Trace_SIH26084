@@ -89,4 +89,4 @@ echo "  TOOL_BEARER_TOKEN         = $TOOL_TOKEN"
 echo "  WEBHOOK_PATH_SECRET       = $HOOK_SECRET"
 [ "$WARN" = "1" ] && echo && echo "There were warnings above — check the values if the test fails."
 echo
-echo "Next:  uvicorn app.main:app --reload --port 8787     then  ./test.sh"
+echo "Next:  uvicorn app.main:app --app-dir services/voice-ingest --reload --port 8787     then  ./test.sh"

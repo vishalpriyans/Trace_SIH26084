@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Local smoke test. Run the server first, in another terminal:
-#   uvicorn app.main:app --reload --port 8787
+#   uvicorn app.main:app --app-dir services/voice-ingest --reload --port 8787
 set -u
 cd "$(dirname "$0")/../.." || exit 1
 source .env 2>/dev/null || { echo "no .env found — copy .env.example to .env first"; exit 1; }
