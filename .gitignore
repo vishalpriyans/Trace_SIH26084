@@ -8,8 +8,8 @@ venv/
 
 # web console
 node_modules/
-web/.next/
-web/out/
+.next/
+out/
 .env.local
 .env*.local
 next-env.d.ts
