@@ -28,8 +28,8 @@
  * it. That is the correct state for it to be in. It is not a gap to paper over.
  */
 
-import type { Status } from "./status";
-import type { Discipline } from "./status";
+import type { Status } from "@/domain/status";
+import type { Discipline } from "@/domain/status";
 import { DATA_SOURCE } from "./data";
 
 const isDb = DATA_SOURCE === "supabase";
@@ -38,7 +38,7 @@ const isDb = DATA_SOURCE === "supabase";
 type Row = Record<string, any>;
 
 async function client() {
-  const { db } = await import("./supabase");
+  const { db } = await import("./db/client");
   return db;
 }
 

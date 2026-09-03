@@ -2,7 +2,7 @@
 // New file. Create the directory if it does not exist.
 
 import { getFieldUser } from "@/server/data";
-import { fileSos, type InboundSos } from "@/lib/inbox";
+import { fileSos, type InboundSos } from "@/server/inbox";
 import { fail, guard, json, parseBody, preflight } from "@/lib/api/http";
 
 export const dynamic = "force-dynamic";

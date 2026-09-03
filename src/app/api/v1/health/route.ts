@@ -2,7 +2,7 @@
 // New file. Create the directory if it does not exist.
 
 import { DATA_SOURCE, MATCHER_BUILT } from "@/server/data";
-import { WRITES_PERSIST } from "@/lib/inbox";
+import { WRITES_PERSIST } from "@/server/inbox";
 import { json, preflight, MOBILE_API_VERSION } from "@/lib/api/http";
 
 export const dynamic = "force-dynamic";

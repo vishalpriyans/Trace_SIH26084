@@ -14,7 +14,7 @@ import {
   type InboundReport,
   type InboundSos,
   type Receipt,
-} from "@/lib/inbox";
+} from "@/server/inbox";
 import { fail, guard, json, parseBody, preflight } from "@/lib/api/http";
 
 export const dynamic = "force-dynamic";

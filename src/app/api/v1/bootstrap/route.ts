@@ -11,7 +11,7 @@ import {
   getMyQuestions,
   getMyUpdates,
 } from "@/server/data";
-import { WRITES_PERSIST, getCapturedReports } from "@/lib/inbox";
+import { WRITES_PERSIST, getCapturedReports } from "@/server/inbox";
 import { guard, identify, json, preflight, MOBILE_API_VERSION } from "@/lib/api/http";
 
 export const dynamic = "force-dynamic";
